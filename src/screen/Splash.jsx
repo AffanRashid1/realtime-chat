@@ -5,7 +5,7 @@ const Splash = () => {
     return (
         <>
             <Stack minHeight="100vh" justifyContent="center" alignItems="center">
-                <Typography variant='h2'>Loading</Typography>
+                <Typography variant='h2'>Loading...</Typography>
             </Stack>
         </>
     )
