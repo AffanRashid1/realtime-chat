@@ -41,6 +41,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={!user ? <Login /> : <ChatBox />} />;
+          <Route path="/chat-home/:receiverId" element={<ChatBox />} />;
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

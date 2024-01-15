@@ -9,17 +9,15 @@ const Message = ({ message }) => {
         <Stack
             direction="row"
             gap={2}
-            // className={`${message.uid === user.uid ? "right" : ""}`}
             m="20px"
             p={1}
             sx={{
                 bgcolor: "secondary.main",
                 width: "max-content",
-                maxWidth: "50%",
+                maxWidth: { xs: "90%", sm: "50%" },
                 borderRadius: 4,
+                wordBreak: "break-word",
                 marginLeft: message?.uid === user.uid && "auto",
-
-
             }}
         >
             <Avatar
@@ -31,7 +29,7 @@ const Message = ({ message }) => {
                 <Typography variant="caption" color="white">
                     {message?.name === user?.displayName ? "You" : message?.name}
                 </Typography>
-                <Typography variant="body1" color="white">
+                <Typography variant="body1" color="white" fontSize={{ xs: "12px", sm: "15px" }}>
                     {message.text}
                 </Typography>
             </Box>

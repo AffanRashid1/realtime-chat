@@ -3,9 +3,7 @@ import { auth, fireStore } from "../firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import {
   Box,
-  Button,
   IconButton,
-  Input,
   InputBase,
   Stack,
 } from "@mui/material";
@@ -16,7 +14,7 @@ const SendMessage = ({ scroll }) => {
 
   const sendMessage = async (event) => {
     event.preventDefault();
-    if (message.trim() === "") {
+    if (message.trim() === "" || message.length > "50") {
       alert("Enter valid message");
       return;
     }
@@ -40,9 +38,9 @@ const SendMessage = ({ scroll }) => {
         p: 2,
         bgcolor: "background.default",
       }}
-      width="100%"
+      width="73%"
     >
-      <form onSubmit={(e) => sendMessage(e)} style={{ width: "100%" }}>
+      <form onSubmit={(e) => sendMessage(e)}>
         <Stack
           direction="row"
           sx={{
