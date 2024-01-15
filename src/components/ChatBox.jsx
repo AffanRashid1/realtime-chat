@@ -16,17 +16,17 @@ import Message from "./Message";
 import { Box, Paper, Stack } from "@mui/material";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Layout from "./Layout/Layout";
+import { useParams } from "react-router-dom";
 
 const ChatBox = () => {
   const [messages, setMessages] = useState([]);
   const scroll = useRef();
   const user = auth?.currentUser;
-
+  const data = useParams();
 
 
   useEffect(() => {
-
-    setDoc(doc(fireStore, "users", user.uid), {
+    setDoc(doc(fireStore, "users", user?.uid), {
       username: user?.displayName,
       email: user?.email,
       userId: user?.uid,
@@ -35,28 +35,60 @@ const ChatBox = () => {
     });
 
 
-    const q = query(
-      collection(fireStore, "messages"),
-      orderBy("createdAt", "desc"),
-      limit(50)
-    );
-    const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
-      const fetchedMessages = [];
-      QuerySnapshot.forEach((doc) => {
-        fetchedMessages.push({ ...doc.data(), id: doc?.id });
-      });
+    // const q = query(
+    //   collection(fireStore, "messages"),
+    //   orderBy("createdAt", "desc"),
+    //   limit(50)
+    // );
+    // const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
+    //   const fetchedMessages = [];
+    //   QuerySnapshot.forEach((doc) => {
+    //     fetchedMessages.push({ ...doc.data(), id: doc?.id });
+    //   });
 
-      const sortedMessages = fetchedMessages.sort(
-        (a, b) => {
-          return a.createdAt - b.createdAt
+    //   const sortedMessages = fetchedMessages.sort(
+    //     (a, b) => {
+    //       return a.createdAt - b.createdAt
+    //     }
+    //   );
+
+    //   setMessages(sortedMessages);
+
+    // });
+    // return () => unsubscribe;
+  }, []);
+
+
+  useEffect(() => {
+    if (data?.receiverId) {
+      const unsub = onSnapshot(
+        query(
+          collection(
+            fireStore,
+            "users",
+            user?.uid,
+            "chatUsers",
+            data?.receiverId,
+            "messages"
+          ),
+          orderBy("timestamp")
+        ),
+        (snapshot) => {
+          setMessages(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              messages: doc.data(),
+            }))
+          );
         }
       );
 
-      setMessages(sortedMessages);
+      return unsub;
+    }
+  }, [data?.receiverId]);
 
-    });
-    return () => unsubscribe;
-  }, []);
+
+
   return (
     <>
       <Layout>
@@ -66,7 +98,7 @@ const ChatBox = () => {
           ))}
         </Box>
         <span ref={scroll}></span>
-        <SendMessage scroll={scroll} />
+        <SendMessage scroll={scroll} receiverId={data?.receiverId} />
       </Layout>
     </>
   );

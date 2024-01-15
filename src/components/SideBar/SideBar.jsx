@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { Avatar, Box, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Paper } from '@mui/material'
 import { collection, onSnapshot } from 'firebase/firestore';
-import { fireStore } from '../../firebase';
+import { auth, fireStore } from '../../firebase';
+import { useNavigate } from 'react-router-dom';
 
 const SideBar = () => {
 
     const [users, setUsers] = useState(null)
-
+    const navigate = useNavigate()
+    const user = auth?.currentUser
 
     useEffect(() => {
         const unSub = onSnapshot(collection(fireStore, "users"), (snapshot) => {
@@ -14,6 +16,13 @@ const SideBar = () => {
         });
         return unSub;
     }, []);
+
+
+
+    const handleToggle = (username, userId) => {
+        navigate(`/chat-home/${userId}`);
+    };
+
 
     return (
         <>
@@ -23,27 +32,28 @@ const SideBar = () => {
                         width: "100%",
                     }}
                 >
-                    {users?.map((value, index) => {
+                    {users?.map((value) => {
                         const labelId = `checkbox-list-secondary-label-${value}`;
+                        if (user?.uid !== value.userId)
 
-                        return (
-                            <ListItem key={value.userId} disablePadding sx={{ padding: "7px 0" }}>
-                                <ListItemButton
-                                // onClick={() => {
-                                //     handleToggle(value.username, value.userId);
-                                // }}
-                                >
-                                    <ListItemAvatar>
-                                        <Avatar
-                                            alt={value.username}
-                                            src={value?.avatar}
-                                        />
-                                    </ListItemAvatar>
-                                    <ListItemText id={labelId}
-                                        primary={`${value.username}`} />
-                                </ListItemButton>
-                            </ListItem>
-                        );
+                            return (
+                                <ListItem key={value.userId} disablePadding sx={{ padding: "7px 0" }}>
+                                    <ListItemButton
+                                        onClick={() => {
+                                            handleToggle(value?.username, value?.userId);
+                                        }}
+                                    >
+                                        <ListItemAvatar>
+                                            <Avatar
+                                                alt={value.username}
+                                                src={value?.avatar}
+                                            />
+                                        </ListItemAvatar>
+                                        <ListItemText id={labelId}
+                                            primary={`${value.username}`} />
+                                    </ListItemButton>
+                                </ListItem>
+                            );
                     })}
                 </List>
             </Paper>

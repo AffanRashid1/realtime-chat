@@ -2,12 +2,16 @@ import React from 'react'
 import { AppBar, Avatar, Box, IconButton, Stack, Toolbar, Typography } from '@mui/material'
 import LogoutIcon from '@mui/icons-material/Logout';
 import { auth } from '../firebase';
+import { useNavigate } from 'react-router-dom';
 
 
 const Navbar = () => {
+    let navigate = useNavigate()
+
     const userDetail = auth.currentUser;
     const signOut = () => {
         auth.signOut();
+        navigate("/")
     };
 
 
