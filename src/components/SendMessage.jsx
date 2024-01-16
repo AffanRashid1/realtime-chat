@@ -1,25 +1,52 @@
 import React, { useEffect, useState } from "react";
 import { auth, fireStore } from "../firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { storage } from "../firebase";
+import { styled } from '@mui/material/styles';
 import {
   Box,
+  Button,
   IconButton,
   InputBase,
   Stack,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
+import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 
 const SendMessage = ({ scroll, receiverId }) => {
   const [messageInput, setMessageInput] = useState("");
+  const [image, setImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
   const user = auth.currentUser;
+
+  const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+  });
 
   const sendMessage = async (e) => {
     e.preventDefault()
     try {
-      if (messageInput.trim() === "" || messageInput?.length > 50) {
-        return;
+      if (!messageInput.trim() && !image) {
+        return
       }
       if (user && receiverId) {
+        if (image) {
+          const storageRef = ref(storage, `images/${user.uid}/${Date.now()}_${image.name}`);
+          await uploadBytes(storageRef, image);
+
+          const imageUrl = await getDownloadURL(storageRef);
+          setImageUrl(imageUrl)
+        }
+
         await addDoc(
           collection(
             fireStore,
@@ -35,6 +62,7 @@ const SendMessage = ({ scroll, receiverId }) => {
             message: messageInput,
             timestamp: new Date(),
             avatar: user?.photoURL,
+            imageUrl
           }
         );
 
@@ -53,6 +81,7 @@ const SendMessage = ({ scroll, receiverId }) => {
             message: messageInput,
             timestamp: new Date(),
             avatar: user?.photoURL,
+            imageUrl
           }
         );
       }
@@ -88,6 +117,11 @@ const SendMessage = ({ scroll, receiverId }) => {
           alignItems="center"
           justifyContent="space-between"
         >
+          <Button component="label" variant="contained" startIcon={<InsertPhotoIcon />}>
+            <VisuallyHiddenInput type="file"
+              onChange={(e) => setImage(e.target.files[0])}
+            />
+          </Button>
           <InputBase
             name="messageInput"
             type="text"
@@ -96,6 +130,9 @@ const SendMessage = ({ scroll, receiverId }) => {
             value={messageInput}
             fullWidth
           />
+
+
+
           <IconButton type="submit">
             <SendIcon />
           </IconButton>

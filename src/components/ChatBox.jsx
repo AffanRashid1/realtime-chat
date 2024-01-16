@@ -100,7 +100,7 @@ const ChatBox = () => {
           ))}
         </Box>
         <span ref={scroll}></span>
-        <SendMessage scroll={scroll} receiverId={receiverId} />
+        <SendMessage scroll={scroll} receiverId={decodedReceiverData?.userId} />
       </Layout>
     </>
   );

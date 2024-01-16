@@ -3,6 +3,7 @@ import { auth } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Avatar, Box, Stack, Typography } from "@mui/material";
 const Message = ({ message }) => {
+    console.log("🚀 ~ Message ~ message:", message)
     const [user] = useAuthState(auth);
 
     return (
@@ -27,10 +28,10 @@ const Message = ({ message }) => {
             }}
         >
 
-            <Avatar
+            {/* <Avatar
                 src={message?.messages?.avatar}
                 alt="user avatar"
-            />
+            /> */}
             <Box>
                 <Typography variant="caption" color="white">
                     {message?.messages?.username === user?.displayName ? "You" : message?.messages?.username}
@@ -38,6 +39,9 @@ const Message = ({ message }) => {
                 <Typography variant="body1" color="white" fontSize={{ xs: "12px", sm: "15px" }}>
                     {message?.messages?.message}
                 </Typography>
+                {message?.messages?.imageUrl &&
+                    <img src={message?.messages?.imageUrl} alt="image" width="100%" style={{ borderRadius: 7 }} />
+                }
             </Box>
         </Stack >
     );
