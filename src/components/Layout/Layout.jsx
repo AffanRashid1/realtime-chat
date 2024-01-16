@@ -10,10 +10,11 @@ const Layout = ({ children }) => {
                 sx={{
                     maxHeight: "100vh",
                     bgcolor: "background.default",
+                    overflow: 'hidden'
                 }}
             >
                 <Navbar />
-                <Grid container spacing={2}>
+                <Grid container>
                     <Grid item xs={3} >
                         <SideBar />
                     </Grid>

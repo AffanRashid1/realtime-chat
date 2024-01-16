@@ -12,7 +12,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 const SendMessage = ({ scroll, receiverId }) => {
   const [messageInput, setMessageInput] = useState("");
-  const user = useAuthState(auth);
+  const user = auth.currentUser;
+
 
 
 
@@ -57,6 +58,7 @@ const SendMessage = ({ scroll, receiverId }) => {
             messageUserId: user.uid,
             message: messageInput,
             timestamp: new Date(),
+            avatar: user?.photoURL,
           }
         );
 
@@ -74,14 +76,19 @@ const SendMessage = ({ scroll, receiverId }) => {
             messageUserId: user.uid,
             message: messageInput,
             timestamp: new Date(),
+            avatar: user?.photoURL,
           }
         );
       }
+
     } catch (error) {
       console.log(error);
     }
+    finally {
+      scroll.current.focus();
+      setMessageInput("")
+    }
 
-    setMessageInput("")
   };
 
 
@@ -89,12 +96,12 @@ const SendMessage = ({ scroll, receiverId }) => {
   return (
     <Box
       sx={{
-        position: "fixed",
+        position: "sticky",
         bottom: 0,
         p: 2,
         bgcolor: "background.default",
       }}
-      width="73%"
+      width="100%"
     >
       <form onSubmit={(e) => sendMessage(e)}>
         <Stack

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Avatar, Box, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Paper } from '@mui/material'
+import { Avatar, Box, LinearProgress, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Paper } from '@mui/material'
 import { collection, onSnapshot } from 'firebase/firestore';
 import { auth, fireStore } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
@@ -26,7 +26,7 @@ const SideBar = () => {
 
     return (
         <>
-            <Paper sx={{ width: "100%", minHeight: "100%" }}>
+            <Paper sx={{ width: "100%", maxHeight: "100vh", height: "100vh" }}>
                 <List
                     sx={{
                         width: "100%",

@@ -17,20 +17,21 @@ const Message = ({ message }) => {
                 maxWidth: { xs: "90%", sm: "50%" },
                 borderRadius: 4,
                 wordBreak: "break-word",
-                marginLeft: message?.uid === user.uid && "auto",
+                marginLeft: message?.messages?.messageUserId === user.uid && "auto",
             }}
         >
+
             <Avatar
                 className="chat-bubble__left"
-                src={message?.avatar}
+                src={message?.messages?.avatar}
                 alt="user avatar"
             />
             <Box>
                 <Typography variant="caption" color="white">
-                    {message?.name === user?.displayName ? "You" : message?.name}
+                    {message?.messages?.username === user?.displayName ? "You" : message?.messages?.username}
                 </Typography>
                 <Typography variant="body1" color="white" fontSize={{ xs: "12px", sm: "15px" }}>
-                    {message.text}
+                    {message?.messages?.message}
                 </Typography>
             </Box>
         </Stack >
