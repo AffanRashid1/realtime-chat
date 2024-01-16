@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./firebase";
 import Login from "./components/Login";
@@ -19,7 +19,6 @@ function App() {
       },
       secondary: {
         main: "#162C46",
-        // main: '#0842A0',
       },
       background: {
         default: "#031525",
@@ -46,6 +45,33 @@ function App() {
         </BrowserRouter>
       }
     </ThemeProvider>
+    // <ThemeProvider theme={theme}>
+    //   {loading ? (
+    //     <Splash />
+    //   ) : (
+    //     <BrowserRouter>
+    //       <Routes>
+    //         <Route
+    //           path="/"
+    //           element={user ? <Navigate to="/chat-home" /> : <Login />}
+    //         />
+    //         <Route
+    //           path="/chat-home"
+    //           element={user ? <Navigate to="/chat-home/default-receiver" /> : <Navigate to="/" />}
+    //         >
+    //           <Route
+    //             path="/" 
+    //             element={<ChatBox receiverId="default-receiver" />}
+    //           />
+    //           <Route
+    //             path="/:receiverId"
+    //             element={<ChatBox />}
+    //           />
+    //         </Route>
+    //       </Routes>
+    //     </BrowserRouter>
+    //   )}
+    // </ThemeProvider>
   );
 }
 export default App;

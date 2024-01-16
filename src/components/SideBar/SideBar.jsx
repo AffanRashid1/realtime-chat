@@ -17,16 +17,15 @@ const SideBar = () => {
         return unSub;
     }, []);
 
-
-
-    const handleToggle = (username, userId) => {
-        navigate(`/chat-home/${userId}`);
+    const handleToggle = (value) => {
+        const serializedValue = encodeURIComponent(JSON.stringify(value));
+        navigate(`/chat-home/${serializedValue}`);
     };
 
 
     return (
         <>
-            <Paper sx={{ width: "100%", maxHeight: "100vh", height: "100vh" }}>
+            <Paper sx={{ width: "100%", maxHeight: "100vh", height: "100vh", }}>
                 <List
                     sx={{
                         width: "100%",
@@ -40,7 +39,7 @@ const SideBar = () => {
                                 <ListItem key={value.userId} disablePadding sx={{ padding: "7px 0" }}>
                                     <ListItemButton
                                         onClick={() => {
-                                            handleToggle(value?.username, value?.userId);
+                                            handleToggle(value);
                                         }}
                                     >
                                         <ListItemAvatar>

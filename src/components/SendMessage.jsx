@@ -8,34 +8,10 @@ import {
   Stack,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import { useAuthState } from "react-firebase-hooks/auth";
 
 const SendMessage = ({ scroll, receiverId }) => {
   const [messageInput, setMessageInput] = useState("");
   const user = auth.currentUser;
-
-
-
-
-  // const sendMessage = async (event) => {
-  //   event.preventDefault();
-  //   if (message.trim() === "" || message.length > "50") {
-  //     alert("Enter valid message");
-  //     return;
-  //   }
-  //   const { uid, displayName, photoURL } = auth.currentUser;
-  //   await addDoc(collection(fireStore, "messages"), {
-  //     text: message,
-  //     name: displayName,
-  //     avatar: photoURL,
-  //     createdAt: serverTimestamp(),
-  //     uid,
-  //   });
-  //   scroll.current.scrollIntoView({ behavior: "smooth" });
-  //   setMessage("");
-  // };
-
-
 
   const sendMessage = async (e) => {
     e.preventDefault()
@@ -85,13 +61,10 @@ const SendMessage = ({ scroll, receiverId }) => {
       console.log(error);
     }
     finally {
-      scroll.current.focus();
       setMessageInput("")
     }
 
   };
-
-
 
   return (
     <Box
@@ -138,6 +111,23 @@ export default SendMessage;
 
 
 
+// const sendMessage = async (event) => {
+//   event.preventDefault();
+//   if (message.trim() === "" || message.length > "50") {
+//     alert("Enter valid message");
+//     return;
+//   }
+//   const { uid, displayName, photoURL } = auth.currentUser;
+//   await addDoc(collection(fireStore, "messages"), {
+//     text: message,
+//     name: displayName,
+//     avatar: photoURL,
+//     createdAt: serverTimestamp(),
+//     uid,
+//   });
+//   scroll.current.scrollIntoView({ behavior: "smooth" });
+//   setMessage("");
+// };
 
 
 

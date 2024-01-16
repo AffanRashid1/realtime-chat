@@ -12,17 +12,20 @@ import {
 import { auth, fireStore } from "../firebase";
 import SendMessage from "./SendMessage";
 import Message from "./Message";
-import { Box, LinearProgress, Paper, Stack, Typography } from "@mui/material";
+import { Avatar, Box, IconButton, LinearProgress, Paper, Stack, Typography } from "@mui/material";
 import Layout from "./Layout/Layout";
 import { useParams } from "react-router-dom";
-import { useAuthState } from "react-firebase-hooks/auth";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 const ChatBox = () => {
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
   const scroll = useRef();
-  const { receiverId } = useParams();
   const user = auth?.currentUser;
+  const { receiverId } = useParams();
+
+
+  let decodedReceiverData = receiverId && JSON.parse(decodeURIComponent(receiverId))
 
 
   useEffect(() => {
@@ -36,29 +39,7 @@ const ChatBox = () => {
         avatar: user?.photoURL
       });
     }
-    // const q = query(
-    //   collection(fireStore, "messages"),
-    //   orderBy("createdAt", "desc"),
-    //   limit(50)
-    // );
-    // const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
-    //   const fetchedMessages = [];
-    //   QuerySnapshot.forEach((doc) => {
-    //     fetchedMessages.push({ ...doc.data(), id: doc?.id });
-    //   });
-
-    //   const sortedMessages = fetchedMessages.sort(
-    //     (a, b) => {
-    //       return a.createdAt - b.createdAt
-    //     }
-    //   );
-
-    //   setMessages(sortedMessages);
-
-    // });
-    // return () => unsubscribe;
   }, [user]);
-
 
 
   useEffect(() => {
@@ -71,7 +52,7 @@ const ChatBox = () => {
             "users",
             user?.uid,
             "chatUsers",
-            receiverId,
+            decodedReceiverData?.userId,
             "messages"
           ),
           orderBy("timestamp")
@@ -89,54 +70,31 @@ const ChatBox = () => {
 
       return unSub;
     } else {
-      // Handle the case when receiverId is null or undefined
       setIsLoading(false);
       setMessages([]);
     }
   }, [receiverId, user]);
 
 
-  // useEffect(() => {
-  //   setIsLoading(true)
-  //   if (receiverId) {
-  //     const unSub = onSnapshot(
-  //       query(
-  //         collection(
-  //           fireStore,
-  //           "users",
-  //           user?.uid,
-  //           "chatUsers",
-  //           receiverId,
-  //           "messages"
-  //         ),
-  //         orderBy("timestamp")
-  //       ),
-  //       (snapshot) => {
-  //         setMessages(
-  //           snapshot.docs?.map((doc) => ({
-  //             id: doc.id,
-  //             messages: doc.data(),
-  //           }))
-  //         );
-  //         setIsLoading(false)
-  //       }
-  //     );
-
-  //     return unSub;
-  //   }
-  // }, [receiverId]);
-
-
-
-
-
   return (
     <>
       <Layout>
+        {
+          decodedReceiverData &&
+          <Stack direction="row" bgcolor="background.paper" justifyContent="space-between" p="8px" alignItems="center" >
+            <Stack direction="row" alignItems="center" gap={1}>
+              <Avatar src={decodedReceiverData?.avatar} />
+              <Typography variant="h5" color="white">{decodedReceiverData?.username}</Typography>
+            </Stack>
+            <IconButton>
+              <MoreVertIcon />
+            </IconButton>
+          </Stack>
+        }
         {isLoading &&
           < LinearProgress />
         }
-        <Box padding="0 0 80px 10px" sx={{ overflowY: "scroll", }} maxHeight="calc(100vh - 56px)" height="calc(100vh - 56px)"  >
+        <Box padding="0 0 140px 10px" sx={{ overflowY: "scroll", }} maxHeight="calc(100vh - 56px)" height="calc(100vh - 56px)"  >
           {messages?.map((message) => (
             <Message key={message?.id} message={message} />
           ))}

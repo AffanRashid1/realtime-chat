@@ -7,6 +7,7 @@ const Message = ({ message }) => {
 
     return (
         <Stack
+            // direction={message?.messages?.messageUserId === user.uid ? "row-reverse" : "row"}
             direction="row"
             gap={2}
             m="20px"
@@ -15,14 +16,18 @@ const Message = ({ message }) => {
                 bgcolor: "secondary.main",
                 width: "max-content",
                 maxWidth: { xs: "90%", sm: "50%" },
-                borderRadius: 4,
+                borderTopLeftRadius:
+                    user?.uid == message?.messages.messageUserId ? 10 : 0,
+                borderTopRightRadius:
+                    user?.uid == message?.messages.messageUserId ? 0 : 10,
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
                 wordBreak: "break-word",
                 marginLeft: message?.messages?.messageUserId === user.uid && "auto",
             }}
         >
 
             <Avatar
-                className="chat-bubble__left"
                 src={message?.messages?.avatar}
                 alt="user avatar"
             />
