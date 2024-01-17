@@ -25,7 +25,7 @@ const ChatBox = () => {
   const { receiverId } = useParams();
 
 
-  let decodedReceiverData = receiverId && JSON.parse(decodeURIComponent(receiverId))
+  let decodedReceiverData = receiverId && JSON.parse(decodeURIComponent(receiverId || ""))
 
 
   useEffect(() => {
@@ -100,7 +100,7 @@ const ChatBox = () => {
           ))}
         </Box>
         <span ref={scroll}></span>
-        <SendMessage scroll={scroll} receiverId={decodedReceiverData?.userId} />
+        <SendMessage scroll={scroll} receiverId={decodedReceiverData?.userId} receiverName={decodedReceiverData?.username} />
       </Layout>
     </>
   );

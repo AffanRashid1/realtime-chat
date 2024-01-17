@@ -3,9 +3,8 @@ import { auth } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Avatar, Box, Stack, Typography } from "@mui/material";
 const Message = ({ message }) => {
-    console.log("🚀 ~ Message ~ message:", message)
     const [user] = useAuthState(auth);
-
+    console.log(message?.messages)
     return (
         <Stack
             // direction={message?.messages?.messageUserId === user.uid ? "row-reverse" : "row"}
