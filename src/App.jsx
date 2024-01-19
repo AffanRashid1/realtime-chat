@@ -45,33 +45,6 @@ function App() {
         </BrowserRouter>
       }
     </ThemeProvider>
-    // <ThemeProvider theme={theme}>
-    //   {loading ? (
-    //     <Splash />
-    //   ) : (
-    //     <BrowserRouter>
-    //       <Routes>
-    //         <Route
-    //           path="/"
-    //           element={user ? <Navigate to="/chat-home" /> : <Login />}
-    //         />
-    //         <Route
-    //           path="/chat-home"
-    //           element={user ? <Navigate to="/chat-home/default-receiver" /> : <Navigate to="/" />}
-    //         >
-    //           <Route
-    //             path="/" 
-    //             element={<ChatBox receiverId="default-receiver" />}
-    //           />
-    //           <Route
-    //             path="/:receiverId"
-    //             element={<ChatBox />}
-    //           />
-    //         </Route>
-    //       </Routes>
-    //     </BrowserRouter>
-    //   )}
-    // </ThemeProvider>
   );
 }
 export default App;

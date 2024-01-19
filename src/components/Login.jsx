@@ -1,5 +1,4 @@
 import React from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
 import { auth } from "../firebase";
 import { Button, Stack } from "@mui/material";
